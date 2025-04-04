@@ -1,0 +1,140 @@
+@font-face {
+    font-family: OpenSans;
+    src: url(../fonts/OpenSans-Regular.ttf);
+}
+:root{
+    --white: white;
+    --black: black;
+    --headerColor: rgb(99, 233, 243);
+    --textColor: rgb(0, 0, 0);
+    --modalColor: rgb(99, 233, 243);
+    --aHoverColor: rgb(218, 180, 13);
+    --clickableA: rgb(72, 72, 248);
+    --btnColor: rgb(0, 0, 0);
+    --btnBgColor: rgb(217, 252, 255); 
+    --mainFont: OpenSans;
+    --backgroundColor: rgb(217, 252, 255); ;
+}
+body{
+    background-color: var(--backgroundColor);
+}
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    color: var(--textColor);
+    font-family: var(--mainFont);
+}
+a{
+    text-decoration:none;
+}
+header a{
+    transition: all 0.3s;
+}
+header a:hover{
+    color: var(--aHoverColor);
+}
+header {
+    padding: 20px 10px;
+    display: grid;
+    grid-template-columns: 2fr 5fr 1fr;
+    background-color: var(--headerColor);
+    align-items: center;
+    justify-items: center;
+    margin-bottom: 40px;
+}
+ul{
+    display: flex;
+    list-style-type: none;
+    column-gap: 20px;
+}
+header>div a{
+    display: grid;
+    grid-template-columns: 1fr 5fr;
+    align-items: center;
+    column-gap: 10px;
+}
+header>div p {
+    justify-self: start;
+    font-weight: 600;
+}
+main{
+    padding: 20px 20px;
+
+    background-color: var(--backgroundColor);
+    display: grid;
+
+}
+header>div a div:first-child{
+
+
+    height: 60px;
+    width: 60px;
+    background-image: url(../images/logo.png);
+    background-size:230px;
+}
+
+.modal{
+    display: grid;
+    background-color: var(--modalColor);
+    padding: 20px;
+    row-gap: 20px;
+
+    border-radius: 15px;
+    width: 90%;
+}
+.modal article{
+    padding-bottom: 10px;
+    border-bottom: 1px solid black;
+}
+.container{
+    display: grid;
+    row-gap: 20px;
+    justify-items: center;
+}
+.clickableA{
+    color: rgb(72, 72, 248);
+}
+.btn {
+    font-weight: 500;
+    border-radius:10px;
+    padding: 20px 20px;
+    background-color: var(--btnBgColor);
+    color:var(--btnColor);
+    text-align: center;
+    transition: all 0.3s;
+
+}
+.btn:hover{
+    transform: scale(1.01);
+}
+.regInput{
+    border-radius: 10px;
+    padding: 10px;
+    font-size: 120%;
+    border: 0px;
+    background-color: var(--btnBgColor);
+}
+label{
+    cursor: pointer;
+}
+form{
+    text-align: end;
+
+}
+form h1{
+    text-align: start;
+}
+form .btn{
+    margin-top: 10px;
+}
+form div{
+    column-gap:20px;    
+    display:grid;
+    grid-template-columns: 1fr 8fr;
+    row-gap:20px;
+    align-items:center;
+    border: 2px solid var(--btnBgColor);
+    padding: 30px 30px;
+    border-radius: 20px;
+}
