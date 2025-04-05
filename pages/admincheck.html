@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Модерация</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-database.js"></script>
+</head>
+<body>
+    <header>
+        <div>
+             <a href="../index.html">
+                <div id="logo"></div>
+                <div>
+                    <p>FCKu - Iosif</p>
+                    Клуб любителей Иосифа
+                </div>
+            </a> 
+        
+        </div>
+        
+        
+
+        <ul>
+            <li><a href="../pages/allmessages.html">Все комплименты</a></li>
+            <li><a href="">Модерация</a></li>
+        </ul>
+    </header>
+
+    <main>
+        <div id="messages"></div>
+    </main>
+
+    <footer>
+
+    </footer>
+</body>
+<script>
+   const firebaseConfig = {
+    apiKey: "AIzaSyAsIpx-6rY_OtcHx_SbPxIFhBkfIQ9qJjU",
+    authDomain: "fckuiosif-fee70.firebaseapp.com",
+    projectId: "fckuiosif-fee70",
+    storageBucket: "fckuiosif-fee70.firebasestorage.app",
+    messagingSenderId: "563554962259",
+    appId: "1:563554962259:web:392670874a4a8c14ec6fa6",
+    measurementId: "G-EHT3W20N0G"
+  };
+
+
+         firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+    function displayMessages() {
+            const messagesRef = database.ref('messagesModerate');
+            messagesRef.on('value', (snapshot) => {
+                const messagesDiv = document.getElementById('messages');
+                messagesDiv.innerHTML = '';
+                snapshot.forEach((childSnapshot) => {
+                    if(childSnapshot.val().moderated == false){
+                    const title = childSnapshot.val().title
+                    const name = childSnapshot.val().name
+                    const message = childSnapshot.val().message
+                    const email = childSnapshot.val().email
+                    const messageId = childSnapshot.key;
+                    const messageElement = document.createElement('div');
+                    messageElement.innerHTML = `
+                        <h3>${title}</h3>
+                        <p>${name}</p>
+                        <h2>${message}</h2>
+                        <p>to ${email}</p><br>
+                        
+                        
+                        <button onclick="deleteMessage('${messageId}')">Delete</button>
+                        <button onclick="moderatedMessage('${messageId}', '${title}','${name}', '${message}', '${email}')">Send</button>
+                    `;
+                    messagesDiv.appendChild(messageElement);
+                }
+                });
+            });
+        }
+        function moderatedMessage(e, title,name,message,email){
+            const messageRef = database.ref(`messagesModerate/${e}`)
+            messageRef.update({
+                moderated: true
+            }).then(() => {
+                displayMessages()
+            })
+            sendEmail(title, name, message, email)
+        }
+        function deleteMessage(messageId) {
+            const messageRef = database.ref(`messagesModerate/${messageId}`);
+            messageRef.remove().then(() => {
+                displayMessages();
+            });
+        }
+        
+    
+    
+
+        
+        displayMessages();
+</script>
+<script src="../js/logo.js"></script>
+<script type="text/javascript"
+        src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
+</script>
+<script src="../js/app.js"></script>
+</html>
