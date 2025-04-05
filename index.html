@@ -5,11 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Главная</title>
     <link rel="stylesheet" href="css/style.css">
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-database.js"></script>
 </head>
 <body>
     <header>
         <div>
-            <a href="index.html">
+            <a href="">
                 <div id="logo"></div>
                 <div>
                     <p>FCKu - Iosif</p>
@@ -19,15 +21,11 @@
         
         </div>
         
-        <ul>
-            <li><a href="pages/allloves">Все комплименты</a></li>
-            <li><a href="pages/sendlove.html">Написать комплимент</a></li>
-            <li><a href="pages/bestloves">Топ Любителей</a></li>
-        </ul>
+        
 
         <ul>
-            <li><a href="pages/login.html">Войти</a></li>
-            <li><a href="pages/regist.html">Регистрация</a></li>
+            <li><a href="pages/allmessages.html">Все комплименты</a></li>
+            <li><a href="pages/admincheck.html">Модерация</a></li>
         </ul>
     </header>
 
@@ -56,20 +54,27 @@
                 и, возможно, прочитает (по крайне мере нужно на это надеяться).
             </div>
         </div>
-
-        <div class="modal">
-            <article>
-                <h1>А какая у меня должна быть motivation?</h1>
-            </article>
-            <div>
-                Именно для этой цели существует система рейтинга. Каждое любовное письмо будет опубликовано на общей стене,
-                которую смогут видеть все пользователи, и не просто видеть, а показывать что испытывают тоже самое с помощью лайков.
-                В конце каждого месяца будет составляться таблица лидеров по количеству набранных лайков. Первое место получит электронный
-                поцелуйчик Иоси и 100 рублей на пачку резинок (жевательных конечно же).
-            </div>
-            <a href="" class="btn continueBtn">Выразить чувства</a>
+        <div class="container">
+            <form action="" class="modal" id="messageForm">
+              <h1>Отправить письмо</h1>
+              <div>
+                  <label for="name">Имя отправителя</label><input type="text" class="regInput" name="name" id="nameInput">               
+                  <label for="title">Оглавление сообщения</label><input type="text" class="regInput" name="title" id="titleInput">               
+                  <label for="message">Сообщение</label><textarea class="regInput" name="message" id="messageInput" cols="30" rows="3"></textarea>
+                  <label for="emailGet">Почта получателя</label><input value="krocodilob@gmail.com" type="email" class="regInput" name="emailGet" id="emailInput">               
+              </div>
+              <a id="submitSend" class="btn" >Отправить</a>
+             </form>
+            
+          </div>
+          <span></span>
         </div>
-        </div>
+        <div id="messagesDiv"></div>
+        <!-- <form id="messageForm">
+            <textarea id="messageInput" placeholder="Enter your message"></textarea>
+            <a id="submitSend">Send</a>
+        </form> -->
+        <div id="messages"></div>
         <span></span>
     </main>
 
@@ -77,5 +82,47 @@
 
     </footer>
 </body>
-<script src="js/app.js"></script>
+<script>
+    // Ваша конфигурация Firebase
+    const firebaseConfig = {
+    apiKey: "AIzaSyAsIpx-6rY_OtcHx_SbPxIFhBkfIQ9qJjU",
+    authDomain: "fckuiosif-fee70.firebaseapp.com",
+    projectId: "fckuiosif-fee70",
+    storageBucket: "fckuiosif-fee70.firebasestorage.app",
+    messagingSenderId: "563554962259",
+    appId: "1:563554962259:web:392670874a4a8c14ec6fa6",
+    measurementId: "G-EHT3W20N0G"
+  };
+
+     // Инициализация Firebase
+     firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
+
+    document.getElementById('submitSend').addEventListener('click', function(event) {
+        document.querySelector('span').innerHTML = ''
+        event.preventDefault();
+        const title = document.getElementById('titleInput').value;
+        const name = document.getElementById('nameInput').value;
+        const message = document.getElementById('messageInput').value;
+        const email = document.getElementById('emailInput').value;
+
+        saveMessage(title,name,message,email);
+    });
+
+    function saveMessage(title,name,message,email) {
+        const messagesRef = database.ref('messagesModerate');
+        messagesRef.push({
+            title: title,
+            name: name,
+            message: message,
+            email: email,
+            moderated: false,
+            timestamp: firebase.database.ServerValue.TIMESTAMP
+        }).then(() => {
+            document.querySelector('span').innerHTML = 'Сообщение отправлено на модерацию'
+        });
+    }
+
+</script>
+<script src="js/logo.js"></script>
 </html>
